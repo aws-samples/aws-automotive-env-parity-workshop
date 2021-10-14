@@ -1,17 +1,13 @@
-## My Project
+This project is designed to be used with the AWS-ARM workshop on envionmental parity for automotive utilizing AWS Graviton2 instances.
 
-TODO: Fill this README out!
+All the labs use AWS CDK for initial deployment and utilize dedicated VPC.
 
-Be sure to:
+Currently covered scenarios include :
 
-* Change the title in this README
-* Edit your repository description on GitHub
+* CI pipeline for ARM docker container images using CodePipeline, CodeBuild, CodeCommit, and ECR (with docker manifests)
+* CI pipeline for running container on Graviton 2 EC2 instance
+* EC2 instance with sample container running on Graviton2 instance type
 
-## Security
+Future work being planned but not yet implemented:
 
-See [CONTRIBUTING](CONTRIBUTING.md#security-issue-notifications) for more information.
-
-## License
-
-This library is licensed under the MIT-0 License. See the LICENSE file.
-
+* EKS cluster with arm64 nodegroups

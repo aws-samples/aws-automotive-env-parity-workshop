@@ -1,0 +1,13 @@
+__pycache__/
+*.pem
+graviton-egg.info/
+cdk-env/
+cdk.out/
+graviton.egg-info/
+cdk/graviton.egg-info/
+evaluation/eval-env/
+evaluation/ground_truth.json
+evaluation/pred_images_gt_overlay/
+evaluation/predictions.json
+evaluation/predictions/
+

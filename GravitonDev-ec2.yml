@@ -1,0 +1,113 @@
+--- 
+AWSTemplateFormatVersion: 2010-09-09
+Description: >-
+  AWS Envionmental Parity Workshop - Getting Started with Cloud-Native Automotive Software Development.
+  Deploys an EC2 instance with Yocto-Linux AMI containing EWAOL and Docker.
+
+Parameters:
+  KeyName:
+    Description: Name of an existing EC2 KeyPair to enable SSH access to the instances
+    Type: 'AWS::EC2::KeyPair::KeyName'
+    ConstraintDescription: must be the name of an existing EC2 KeyPair.
+  InstanceType:
+    Description: EC2 instance type
+    Type: String
+    Default: t4g.micro
+    AllowedValues:
+      - t4g.micro
+    ConstraintDescription: must be a valid EC2 instance type.
+  SSHLocation:
+    Description: The IP address range that can be used to SSH to the EC2 instances
+    Type: String
+    MinLength: '9'
+    MaxLength: '18'
+    Default: 0.0.0.0/0 
+    AllowedPattern: '(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})/(\d{1,2})'
+    ConstraintDescription: must be a valid IP CIDR range of the form x.x.x.x/x.
+
+Mappings: 
+  RegionMap: 
+    af-south-1: 
+      AMI: NOT_SUPPORTED
+    ap-east-1: 
+      AMI: NOT_SUPPORTED
+    ap-northeast-1: 
+      AMI: NOT_SUPPORTED
+    ap-northeast-2: 
+      AMI: NOT_SUPPORTED
+    ap-northeast-3: 
+      AMI: NOT_SUPPORTED
+    ap-south-1: 
+      AMI: NOT_SUPPORTED
+    ap-southeast-1: 
+      AMI: NOT_SUPPORTED
+    ap-southeast-2: 
+      AMI: NOT_SUPPORTED
+    ca-central-1: 
+      AMI: NOT_SUPPORTED
+    cn-north-1: 
+      AMI: NOT_SUPPORTED
+    cn-northwest-1: 
+      AMI: NOT_SUPPORTED
+    eu-central-1: 
+      AMI: NOT_SUPPORTED
+    eu-north-1: 
+      AMI: NOT_SUPPORTED
+    eu-south-1: 
+      AMI: NOT_SUPPORTED
+    eu-west-1: 
+      AMI: ami-07c165908fb75fbd6
+    eu-west-2: 
+      AMI: NOT_SUPPORTED
+    eu-west-3: 
+      AMI: NOT_SUPPORTED
+    me-south-1: 
+      AMI: NOT_SUPPORTED
+    sa-east-1: 
+      AMI: NOT_SUPPORTED
+    us-east-1: 
+      AMI: ami-02d536a3ef8cd2838
+    us-east-2: 
+      AMI: NOT_SUPPORTED
+    us-west-1: 
+      AMI: NOT_SUPPORTED
+    us-west-2: 
+      AMI: NOT_SUPPORTED
+
+Resources:
+  DockerHostPublicIP:
+    Type: AWS::EC2::EIP
+    Properties:
+      InstanceId: !Ref DockerHost
+      Tags:
+        - Key: "Name"
+          Value: "DockerHostPublicIP"
+
+  DockerHostSecurityGroup:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      GroupDescription: >-
+        Enable SSH access via port tcp/22
+        access
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: '22'
+          ToPort: '22'
+          CidrIp: !Ref SSHLocation
+
+  DockerHost:
+    Type: 'AWS::EC2::Instance'
+    Properties:
+      ImageId: !FindInMap [RegionMap, !Ref "AWS::Region", AMI]
+      InstanceType: !Ref InstanceType
+      SecurityGroups:
+        - !Ref DockerHostSecurityGroup
+      KeyName: !Ref KeyName
+      Tags:
+        - Key: Name
+          Value: "DockerHost"
+
+Outputs:
+  DockerHostPublicIP:
+    Value: !Ref DockerHostPublicIP
+    Description: DockerHost Public IP Address
