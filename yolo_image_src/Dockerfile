@@ -1,4 +1,4 @@
-FROM autoware/model-zoo-tvm-cli
+FROM autoware/model-zoo-tvm-cli:1.0.0
 RUN apt update && apt install git-lfs
 WORKDIR /app
 RUN GIT_LFS_SKIP_SMUDGE=1 git clone https://github.com/autowarefoundation/modelzoo && \
@@ -15,7 +15,7 @@ COPY main.cpp /app/modelzoo/perception/camera_obstacle_detection/yolo_v2_tiny/te
 
 RUN cd example_pipeline && cmake . && make -j
 
-FROM autoware/model-zoo-tvm-cli
+FROM autoware/model-zoo-tvm-cli:1.0.0
 ENV LD_LIBRARY_PATH="/usr/local/lib/"
 WORKDIR /app
 
