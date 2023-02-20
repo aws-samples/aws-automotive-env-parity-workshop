@@ -2,8 +2,8 @@ FROM autoware/model-zoo-tvm-cli:1.0.0
 RUN apt update && apt install git-lfs
 WORKDIR /app
 RUN GIT_LFS_SKIP_SMUDGE=1 git clone https://github.com/autowarefoundation/modelzoo && \
-    git checkout 0da13b81bac1bdca34f72c037033d605105fce49 && \
     cd modelzoo && \
+    git checkout 0da13b81bac1bdca34f72c037033d605105fce49 && \
     git lfs install && \
     git lfs pull
 
